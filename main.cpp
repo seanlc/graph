@@ -7,8 +7,18 @@ void testConstr()
 {
     Graph myGraph(20);
 }
+
+void testAddEdge()
+{
+    Graph myGraph(5);
+    myGraph.addEdge(0,4,50);
+    cout << "edge from 0 to 4: " << myGraph.isAdj(0,4) << endl;
+    cout << "edge from 4 to 0: " << myGraph.isAdj(4,0) << endl;
+}
+
 int main()
 {
-    testConstr();
+//    testConstr();
+    testAddEdge();
     return 0;
 }

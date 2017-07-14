@@ -1,46 +1,52 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 struct Edge
 {
-    double weight;
     int destIndex;
-    Edge(double w, int n)
-    : weight (w), destIndex (n)
+    double weight;
+    Edge(int dv, double w)
+    : destIndex (dv), weight (w)
     {}
     ~Edge()
     {}
 };
-struct Vertex
-{
-    int data;
-    vector<Edge> adj;
-    Vertex(int d = 0)
-    : data (d)
-    {}
-    ~Vertex()
-    {}
-};
-
 
 class Graph
 {
     public:
-        Graph(int numV)
-        : buf (new Vertex[numV]), numVertex (numV)
-	{}
-	~Graph()
+        Graph(int cap)
+        : numVertex (cap)
 	{
-	    delete [] buf;
+	    vector<Edge> temp;
+	    for(int i = 0; i < cap; ++i)
+	    {
+	       buf.push_back(temp); 
+	    }
 	}
+	~Graph()
+	{}
 	void print();
-	void addEdge(int origin, int dest, double weight);
-	bool isPath();
+	void addEdge(int org, int dest, double weight)
+	{
+	    Edge temp(dest, weight);
+	    buf[org].push_back(temp);
+	}
+	bool isAdj(int fromV, int toV)
+	{
+	    if( any_of(buf[fromV].begin(), buf[fromV].end(), 
+		[&](struct Edge E){ return E.destIndex == toV;  } )   
+	      )
+	        return true;
+	    else
+		return false;
+	} 
 	void BFS();
 	void DFS();
     private:
-	Vertex * buf;
+        vector<vector<Edge>> buf;
 	int numVertex;
 };
