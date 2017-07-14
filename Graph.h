@@ -37,12 +37,8 @@ class Graph
 	}
 	bool isAdj(int fromV, int toV)
 	{
-	    if( any_of(buf[fromV].begin(), buf[fromV].end(), 
-		[&](struct Edge E){ return E.destIndex == toV;  } )   
-	      )
-	        return true;
-	    else
-		return false;
+	    return any_of(buf[fromV].begin(), buf[fromV].end(), 
+		[&](struct Edge E){ return E.destIndex == toV;  } );   
 	} 
 	void BFS();
 	void DFS();
