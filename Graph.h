@@ -23,9 +23,7 @@ class Graph
 	{
 	    vector<Edge> temp;
 	    for(int i = 0; i < cap; ++i)
-	    {
-	       buf.push_back(temp); 
-	    }
+	        buf.push_back(temp);
 	}
 	~Graph()
 	{}
@@ -41,7 +39,17 @@ class Graph
 		[&](struct Edge E){ return E.destIndex == toV;  } );   
 	} 
 	void BFS();
-	void DFS();
+	void DFS(int v)
+	{
+	    static vector<bool> disc(numVertex, false);
+	    cout << "vertex " << v << endl;
+	    disc[v] = true;
+	    for_each(buf[v].begin(), buf[v].end(), [&] (Edge e)
+			    {
+			        if( ! disc[e.destIndex])
+				    DFS(e.destIndex);
+			    });
+	}
     private:
         vector<vector<Edge>> buf;
 	int numVertex;
