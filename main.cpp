@@ -29,10 +29,24 @@ void testDFS()
     myGraph.DFS(0);
 }
 
+void testBFS()
+{
+    Graph myGraph(7);
+    myGraph.addEdge(0,1,1);
+    myGraph.addEdge(0,2,1);
+    myGraph.addEdge(0,3,1);
+    myGraph.addEdge(1,4,1);
+    myGraph.addEdge(1,5,1);
+    myGraph.addEdge(2,6,1);
+    myGraph.addEdge(5,3,1);
+    myGraph.BFS();
+}
+
 int main()
 {
 //    testConstr();
 //    testAddEdge();
-    testDFS();
+//    testDFS();
+    testBFS();
     return 0;
 }
