@@ -5,26 +5,58 @@
 
 using namespace std;
 
-struct Edge
+class Edge
 {
-    int destIndex;
-    double weight;
-    Edge(int dv, double w)
-    : destIndex (dv), weight (w)
-    {}
-    ~Edge()
-    {}
+    private:
+      int destIndex;
+      double weight;
+    public:
+      Edge(int dv, double w)
+      : destIndex (dv), weight (w)
+      {}
+      ~Edge()
+      {}
+      friend ostream & operator << (ostream & o, const Edge e)
+      {
+        o << "Edge to vertex " << e.destIndex << " with weight " << e.weight;
+        return o;
+      }
 };
 
-// TODO add edge
-struct Vertex
+class Vertex
 {
+    private:
     int index;
+    int numEdges;
     vector<Edge> aList;
+    public:
+    void addEdge(int endV, int weight)
+    {
+        Edge e(endV, weight);
+	aList.push_back(e);
+	++numEdges;
+    }
     Vertex()
+    : numEdges(0)
     {}
     ~Vertex()
     {}
+    void setIndex(int n)
+    {
+        index = n;
+    }
+    int getIndex()
+    {
+        return index;
+    }
+    friend ostream & operator <<(ostream & o, const Vertex & v)
+    {
+        o << "Vertex: " << v.index << endl;
+	o << "Edges: " << v.numEdges << endl;
+	for(int i = 0; i < v.numEdges; ++i)
+	    o << v.aList.at(i) << endl;
+	return o;
+    }
 };
 
 class Graph
@@ -35,9 +67,7 @@ class Graph
 	{
 	    gph = new Vertex[numV];
 	    for(int i = 0; i < numVertex; ++i)
-	    {
-	       gph[i].index = i; 
-	    }
+	       gph[i].setIndex(i); 
 	}
 
 	~Graph()
@@ -55,12 +85,16 @@ class Graph
 	    return gph[index];
 	}
 
+	void addEdge(int fromV, int toV, int weight)
+	{
+	   gph[fromV].addEdge(toV, weight);
+	}
+
 	friend ostream & operator << (ostream & o, const Graph & gph)
 	{
 	    int numV = gph.getNumV();
 	    for(int i = 0; i < numV; ++i)
-	        o << "Vertex : " << gph.vAt(i).index << endl;
-	   // add edges
+                cout << gph.vAt(i) << endl;
 	   return o;
 	}
 
