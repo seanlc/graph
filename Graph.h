@@ -5,12 +5,14 @@
 
 using namespace std;
 
+// TODO implement iterator for Graph
+// TODO implement hasEdge and use it to protect against deleting nonexistent edges in removeEdge()
+
 class Edge
 {
-    private:
+    public:
       int destIndex;
       double weight;
-    public:
       Edge(int dv, double w)
       : destIndex (dv), weight (w)
       {}
@@ -26,37 +28,45 @@ class Edge
 class Vertex
 {
     private:
-    int index;
-    int numEdges;
-    vector<Edge> aList;
+      int index;
+      int numEdges;
+      vector<Edge> aList;
     public:
-    void addEdge(int endV, int weight)
-    {
-        Edge e(endV, weight);
-	aList.push_back(e);
-	++numEdges;
-    }
-    Vertex()
-    : numEdges(0)
-    {}
-    ~Vertex()
-    {}
-    void setIndex(int n)
-    {
-        index = n;
-    }
-    int getIndex()
-    {
-        return index;
-    }
-    friend ostream & operator <<(ostream & o, const Vertex & v)
-    {
-        o << "Vertex: " << v.index << endl;
-	o << "Edges: " << v.numEdges << endl;
-	for(int i = 0; i < v.numEdges; ++i)
-	    o << v.aList.at(i) << endl;
-	return o;
-    }
+      void addEdge(int endV, int weight)
+      {
+          Edge e(endV, weight);
+          aList.push_back(e);
+	  ++numEdges;
+      }
+      void removeEdge(int endV, int weight)
+      {
+          aList.erase( remove_if(aList.begin(), aList.end(), [&](Edge  e)
+			  {
+			      return e.weight == weight && e.destIndex == endV;
+			  }));
+	  --numEdges;
+      }
+      bool hasEdge(int toV, int weight);
+      Vertex(int i)
+      : index(i), numEdges(0)
+      {}
+      ~Vertex()
+      {}
+      void setIndex(int n)
+      {
+          index = n;
+      }
+      int getIndex()
+      {
+          return index;
+      }
+      friend ostream & operator <<(ostream & o, const Vertex & v)
+      {
+          o << "Vertex: " << v.index << endl;
+	  o << "Edges: " << v.numEdges << endl;
+	  for_each(v.aList.begin(), v.aList.end(), [&](Edge e){  o << e << endl;});
+	  return o;
+      }
 };
 
 class Graph
@@ -65,29 +75,38 @@ class Graph
         Graph(int numV)
 	: numVertex(numV)
 	{
-	    gph = new Vertex[numV];
+	    gph.reserve(numV);
 	    for(int i = 0; i < numVertex; ++i)
-	       gph[i].setIndex(i); 
+	    {
+		Vertex v(i);
+	        gph.push_back(v);
+	    }
 	}
 
 	~Graph()
-	{
-	    delete [] gph;
-	}
+	{}
 
 	int getNumV() const
 	{
 	    return numVertex;
 	}
 
-	Vertex vAt(int index) const
-	{
-	    return gph[index];
-	}
 
 	void addEdge(int fromV, int toV, int weight)
 	{
 	   gph[fromV].addEdge(toV, weight);
+	}
+
+	void removeEdge(int fromV, int toV, int weight)
+	{
+            gph[fromV].removeEdge(toV, weight);
+	}
+
+	bool hasEdge(int fromV, int toV, int weight);
+
+	Vertex vAt(int i) const
+	{
+	    return gph[i];
 	}
 
 	friend ostream & operator << (ostream & o, const Graph & gph)
@@ -99,6 +118,6 @@ class Graph
 	}
 
     private:
-	Vertex * gph;
+	vector<Vertex> gph;
 	int numVertex;
 };

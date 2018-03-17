@@ -12,14 +12,16 @@ void testConstr()
 void testAddEdge()
 {
     Graph myGraph(5);
-//    myGraph.addEdge(0,4,50);
-//    cout << "edge from 0 to 4: " << myGraph.hasEdge(0,4) << endl;
-//    cout << "edge from 4 to 0: " << myGraph.hasEdge(4,0) << endl;
+    myGraph.addEdge(0,4,50);
+    cout << myGraph << endl;
+
+    myGraph.removeEdge(0,4,50);
+    cout << myGraph << endl;
 }
 
 int main()
 {
-    testConstr();
-//    testAddEdge();
+//    testConstr();
+    testAddEdge();
     return 0;
 }
