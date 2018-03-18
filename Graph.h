@@ -5,8 +5,8 @@
 
 using namespace std;
 
-// TODO implement iterator for Graph
 // TODO implement hasEdge and use it to protect against deleting nonexistent edges in removeEdge()
+// TODO implement removeV()
 
 class Edge
 {
@@ -46,7 +46,10 @@ class Vertex
 			  }));
 	  --numEdges;
       }
-      bool hasEdge(int toV, int weight);
+      bool hasEdge(int toV, int weight)
+      {
+          return any_of(aList.begin(), aList.end(), [&](Edge e){ return toV == e.destIndex && weight == e.weight;  });
+      }
       Vertex(int i)
       : index(i), numEdges(0)
       {}
@@ -91,7 +94,6 @@ class Graph
 	    return numVertex;
 	}
 
-
 	void addEdge(int fromV, int toV, int weight)
 	{
 	   gph[fromV].addEdge(toV, weight);
@@ -102,22 +104,36 @@ class Graph
             gph[fromV].removeEdge(toV, weight);
 	}
 
-	bool hasEdge(int fromV, int toV, int weight);
-
-	Vertex vAt(int i) const
+	void addVertex()
 	{
-	    return gph[i];
+	    Vertex v(numVertex++);
+	    gph.push_back(v);
+	};
+
+	bool hasEdge(int fromV, int toV, int weight)
+	{
+	    return gph[fromV].hasEdge(toV, weight);
 	}
 
-	friend ostream & operator << (ostream & o, const Graph & gph)
+        vector<Vertex>::iterator begin()
 	{
-	    int numV = gph.getNumV();
-	    for(int i = 0; i < numV; ++i)
-                cout << gph.vAt(i) << endl;
-	   return o;
+	    return gph.begin();
+	}
+
+	vector<Vertex>::iterator end()
+	{
+	    return gph.end();
+	}
+
+	friend ostream & operator << (ostream & o, Graph & gph)
+	{
+	    for_each(gph.begin(), gph.end(), [&](Vertex v) { o << v << endl;});
+	    return o;
 	}
 
     private:
 	vector<Vertex> gph;
 	int numVertex;
 };
+
+

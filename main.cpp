@@ -15,8 +15,11 @@ void testAddEdge()
     myGraph.addEdge(0,4,50);
     cout << myGraph << endl;
 
+    cout << "hasEdge(0,4,50): " << myGraph.hasEdge(0,4,50) << endl;
+    
     myGraph.removeEdge(0,4,50);
     cout << myGraph << endl;
+    cout << "hasEdge(0,4,50): " << myGraph.hasEdge(0,4,50) << endl;
 }
 
 int main()
