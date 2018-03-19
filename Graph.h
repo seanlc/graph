@@ -5,8 +5,8 @@
 
 using namespace std;
 
-// TODO implement hasEdge and use it to protect against deleting nonexistent edges in removeEdge()
-// TODO implement removeV()
+// TODO use hasEdge to protect against deleting nonexistent edges in removeEdge()
+// TODO implement hasVertex and use it to protect against deleting nonexistent vertex in removeVertex()
 
 class Edge
 {
@@ -48,7 +48,10 @@ class Vertex
       }
       bool hasEdge(int toV, int weight)
       {
-          return any_of(aList.begin(), aList.end(), [&](Edge e){ return toV == e.destIndex && weight == e.weight;  });
+          return any_of( aList.begin(), aList.end(), [&](Edge e)
+			  { 
+			      return toV == e.destIndex && weight == e.weight;  
+			  });
       }
       Vertex(int i)
       : index(i), numEdges(0)
@@ -67,7 +70,10 @@ class Vertex
       {
           o << "Vertex: " << v.index << endl;
 	  o << "Edges: " << v.numEdges << endl;
-	  for_each(v.aList.begin(), v.aList.end(), [&](Edge e){  o << e << endl;});
+	  for_each(v.aList.begin(), v.aList.end(), [&](Edge e)
+			  {  
+			      o << e << endl;
+			  });
 	  return o;
       }
 };
@@ -76,7 +82,7 @@ class Graph
 {
     public:
         Graph(int numV)
-	: numVertex(numV)
+	: numVertex(numV), vertexIndexNumber(numV)
 	{
 	    gph.reserve(numV);
 	    for(int i = 0; i < numVertex; ++i)
@@ -106,9 +112,19 @@ class Graph
 
 	void addVertex()
 	{
-	    Vertex v(numVertex++);
+	    Vertex v(vertexIndexNumber++);
 	    gph.push_back(v);
+	    ++numVertex;
 	};
+
+	void removeVertex(int index)
+	{
+	    gph.erase( remove_if( gph.begin(), gph.end(), [&](Vertex v)
+				    { 
+				        return v.getIndex() == index;
+				    }), gph.end());
+	    --numVertex;
+	}
 
 	bool hasEdge(int fromV, int toV, int weight)
 	{
@@ -127,13 +143,17 @@ class Graph
 
 	friend ostream & operator << (ostream & o, Graph & gph)
 	{
-	    for_each(gph.begin(), gph.end(), [&](Vertex v) { o << v << endl;});
+	    for_each( gph.begin(), gph.end(), [&](Vertex v) 
+			    { 
+			        o << v << endl;
+			    });
 	    return o;
 	}
 
     private:
 	vector<Vertex> gph;
 	int numVertex;
+	int vertexIndexNumber;
 };
 
 
