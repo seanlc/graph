@@ -53,11 +53,46 @@ void testNumEdges()
     cout << "number of edges (25 expected): " << myGraph.getNumE() << endl; 
 }
 
+void testNumVertices()
+{
+     Graph myGraph(0);
+     Graph myGraph2(10);
+
+     cout << "number of vertices for graph 1 (0 expected): " << myGraph.getNumV() << endl;
+     cout << "number of vertices for graph 2 (10 expected): " << myGraph2.getNumV() << endl;
+}
+
+void testGetVertex()
+{
+    Graph myGraph(5);
+    for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
+		    {
+		       myGraph.addEdge(v.getIndex(), 1, 50); 
+		    });
+
+    cout << "original: " << endl << myGraph;
+
+    vector<Vertex> copy = myGraph.getVertices();
+
+    cout << "copy after removal of edge: " << endl;
+    copy.at(0).removeEdge(1,50);
+
+    for_each(copy.begin(), copy.end(), [&](Vertex v)
+		    {
+		        cout << v << endl;
+		    });
+
+    cout << "original: " << endl << myGraph;
+
+}
+
 int main()
 {
 //    testConstr();
 //    testAddRemoveEdge();
 //    testAddRemoveVertex();
-    testNumEdges();
+//    testNumEdges();
+//    testNumVertices();
+    testGetVertex();
     return 0;
 }

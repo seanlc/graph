@@ -29,6 +29,11 @@ class Vertex
       int numEdges;
       vector<Edge> aList;
     public:
+      Vertex(int i)
+      : index(i), numEdges(0)
+      {}
+      ~Vertex()
+      {}
       void addEdge(int endV, int weight)
       {
           Edge e(endV, weight);
@@ -54,11 +59,6 @@ class Vertex
       {
           return numEdges;
       }
-      Vertex(int i)
-      : index(i), numEdges(0)
-      {}
-      ~Vertex()
-      {}
       void setIndex(int n)
       {
           index = n;
@@ -95,6 +95,12 @@ class Graph
 
 	~Graph()
 	{}
+
+        vector<Vertex> getVertices()
+	{
+	    vector<Vertex> tmp = gph;
+	    return tmp;
+	}
 
 	int getNumV() const
 	{
