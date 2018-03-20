@@ -39,10 +39,25 @@ void testAddRemoveVertex()
     cout << myGraph << endl;
 }
 
+void testNumEdges()
+{
+    Graph myGraph(5);
+
+    for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
+		    {
+		        int index = v.getIndex();
+                        for(int i = 0; i < 5; ++i)
+                            myGraph.addEdge(index,i,50);
+		    });
+
+    cout << "number of edges (25 expected): " << myGraph.getNumE() << endl; 
+}
+
 int main()
 {
 //    testConstr();
 //    testAddRemoveEdge();
-    testAddRemoveVertex();
+//    testAddRemoveVertex();
+    testNumEdges();
     return 0;
 }

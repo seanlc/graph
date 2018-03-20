@@ -5,10 +5,7 @@
 
 using namespace std;
 
-// TODO use hasEdge to protect against deleting nonexistent edges in removeEdge()
-// TODO implement hasVertex and use it to protect against deleting nonexistent vertex in removeVertex()
-
-class Edge
+struct Edge
 {
     public:
       int destIndex;
@@ -52,6 +49,10 @@ class Vertex
 			  { 
 			      return toV == e.destIndex && weight == e.weight;  
 			  });
+      }
+      int getNumEdges()
+      {
+          return numEdges;
       }
       Vertex(int i)
       : index(i), numEdges(0)
@@ -98,6 +99,16 @@ class Graph
 	int getNumV() const
 	{
 	    return numVertex;
+	}
+
+	int getNumE() const
+	{
+	    int numEdges = 0;
+	    for_each(gph.begin(), gph.end(), [&](Vertex v)
+			    {
+			        numEdges += v.getNumEdges();
+			    });
+	    return numEdges;
 	}
 
 	void addEdge(int fromV, int toV, int weight)
