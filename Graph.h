@@ -8,16 +8,17 @@ using namespace std;
 struct Edge
 {
     public:
+      int srcIndex;
       int destIndex;
       double weight;
-      Edge(int dv, double w)
-      : destIndex (dv), weight (w)
+      Edge(int sv, int dv, double w)
+      : srcIndex(sv), destIndex (dv), weight (w)
       {}
       ~Edge()
       {}
       friend ostream & operator << (ostream & o, const Edge e)
       {
-        o << "Edge to vertex " << e.destIndex << " with weight " << e.weight;
+        o << "Edge from vertex " << e.srcIndex  << " to vertex " << e.destIndex << " with weight " << e.weight;
         return o;
       }
 };
@@ -34,9 +35,17 @@ class Vertex
       {}
       ~Vertex()
       {}
+      vector<Edge>::iterator edgeBegin()
+      {
+          return aList.begin(); 
+      }
+      vector<Edge>::iterator edgeEnd()
+      {
+          return aList.end();
+      }
       void addEdge(int endV, int weight)
       {
-          Edge e(endV, weight);
+          Edge e(index, endV, weight);
           aList.push_back(e);
 	  ++numEdges;
       }
@@ -99,6 +108,23 @@ class Graph
         vector<Vertex> getVertices()
 	{
 	    vector<Vertex> tmp = gph;
+	    return tmp;
+	}
+
+	// TODO write function to return vector containing all edges in graph
+	 
+	vector<Edge> getEdges()
+	{
+	    int nEdges = getNumE();
+	    vector<Edge> tmp;
+	    tmp.reserve(nEdges);
+	    for_each(gph.begin(), gph.end(), [&](Vertex v)
+			    {
+			        for_each(v.edgeBegin(), v.edgeEnd(), [&](Edge e)
+						{
+						    tmp.push_back(e);
+						});    
+			    });
 	    return tmp;
 	}
 
