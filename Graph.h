@@ -5,6 +5,9 @@
 
 using namespace std;
 
+// TODO default constructor
+// TODO copy constructor
+// TODO assignment operator
 struct Edge
 {
     public:
@@ -23,6 +26,9 @@ struct Edge
       }
 };
 
+// TODO default constructor
+// TODO copy constructor
+// TODO assignment operator
 class Vertex
 {
     private:
@@ -88,6 +94,9 @@ class Vertex
       }
 };
 
+// TODO default constructor
+// TODO copy constructor
+// TODO assignment operator
 class Graph
 {
     public:
@@ -110,8 +119,6 @@ class Graph
 	    vector<Vertex> tmp = gph;
 	    return tmp;
 	}
-
-	// TODO write function to return vector containing all edges in graph
 	 
 	vector<Edge> getEdges()
 	{
@@ -172,6 +179,19 @@ class Graph
 	bool hasEdge(int fromV, int toV, int weight)
 	{
 	    return gph[fromV].hasEdge(toV, weight);
+	}
+
+	// TODO test will likely not work properly until assignment operator for vertex is implemented
+	// returns Vertex with index matching provided argument, vertex with index of -1 if no such vertex exists
+	Vertex getVertex(int index)
+	{
+	    Vertex vert(-1);
+	    for_each( gph.begin(), gph.end(), [&](Vertex v)   
+			    {
+			        if(v.getIndex() == index)
+				    vert = v;
+			    });
+	    return vert;
 	}
 
         vector<Vertex>::iterator begin()

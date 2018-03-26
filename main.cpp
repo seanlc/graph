@@ -105,6 +105,25 @@ void testGetEdges()
 		    });
 }
 
+void testGetVertexSingle()
+{
+    Graph myGraph(5);
+    for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
+		    {
+		       myGraph.addEdge(v.getIndex(), 1, 50); 
+		    });
+
+    cout << "original: " << endl << myGraph;
+
+    Vertex v= myGraph.getVertex(4);
+    v.removeEdge(1,50);
+
+    cout << "vertex after removal of edge: " << v << endl;
+
+    cout << "original: " << endl << myGraph;
+
+}
+
 int main()
 {
 //    testConstr();
@@ -113,6 +132,7 @@ int main()
 //    testNumEdges();
 //    testNumVertices();
 //    testGetVertex();
-    testGetEdges();
+//    testGetEdges();
+    testGetVertexSingle();
     return 0;
 }
