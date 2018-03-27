@@ -65,12 +65,15 @@ class Vertex
           return index;
       }
 
-     // TODO rewrite 
       Vertex & operator = (const Vertex & that)
       {
           if(this != &that)
 	  {
 	      index = that.index;
+	      inDeg = that.inDeg;
+	      outDeg = that.outDeg;
+	      inEdges = that.inEdges;
+	      outEdges = that.outEdges;
 	  }
           return *this;
       }

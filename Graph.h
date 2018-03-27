@@ -67,6 +67,15 @@ class Graph
 	// TODO rewrite
 	void removeEdge(int fromV, int toV, int weight)
 	{
+	    // TODO get edge from edge collection
+	    //
+	    // TODO remove pointer from inEdges of toV
+            
+            // TODO remove pointer from outEdges of fromV
+	    
+	    // TODO remove edge from edge collection
+
+	    // TODO delete edge
 	}
 
 	void addVertex()
@@ -91,6 +100,7 @@ class Graph
 	    return false;
 	}
 
+	// TODO add exception for nonexistent vertex
 	// returns Vertex with index matching provided argument, vertex with index of -1 if no such vertex exists
 	Vertex getVertex(int index)
 	{
@@ -103,6 +113,19 @@ class Graph
 	    return vert;
 	}
 
+	// TODO add exception for nonexistent edge
+	Edge getEdge(int srcV, int destV, int weight)
+	{
+	    Edge retEdge(-1,-1,-1);
+	    for_each( edges.begin(), edges.end(), [&](Edge e)
+			    {
+			        if(e.srcIndex == srcV && e.destIndex == destV && e.weight == weight)
+				    retEdge = e;
+			    });
+
+	    return retEdge;
+	}
+
         vector<Vertex>::iterator begin()
 	{
 	    return gph.begin();
@@ -111,6 +134,16 @@ class Graph
 	vector<Vertex>::iterator end()
 	{
 	    return gph.end();
+	}
+
+	vector<Edge>::iterator edgeBegin()
+	{
+	    return edges.begin();
+	}
+
+	vector<Edge>::iterator edgesEnd()
+	{
+	    return edges.end();
 	}
 
 	friend ostream & operator << (ostream & o, Graph & gph)

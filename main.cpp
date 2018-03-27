@@ -124,6 +124,21 @@ void testGetVertexSingle()
 
 }
 
+void testGetEdge()
+{
+    Graph myGraph(5);
+    for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
+		    {
+		       myGraph.addEdge(v.getIndex(), 1, 50); 
+		    });
+
+    Edge e = myGraph.getEdge(0,1,50);
+
+    cout << "returned edge: " << endl;
+    cout << e << endl;
+
+}
+
 int main()
 {
 //    testConstr();
@@ -133,6 +148,7 @@ int main()
 //    testNumVertices();
 //    testGetVertex();
 //    testGetEdges();
-    testGetVertexSingle();
+//    testGetVertexSingle();
+    testGetEdge();
     return 0;
 }
