@@ -10,58 +10,49 @@ class Vertex
 {
     private:
       int index;
-      int numEdges;
-      vector<Edge> aList;
+      int inDeg;
+      int outDeg;
+      vector<Edge *> inEdges;
+      vector<Edge *> outEdges;
 
     public:
       Vertex(int i)
-      : index(i), numEdges(0)
+      : index(i), inDeg(0), outDeg(0)
       {}
 
       Vertex()
-      : index(-1), numEdges(0)
+      : index(-1), inDeg(0), outDeg(0)
       {}
 
       ~Vertex()
       {}
 
-      vector<Edge>::iterator edgeBegin()
+      void addOutgoingEdge(Edge * e)
       {
-          return aList.begin(); 
+          outEdges.push_back(e);
+	  ++outDeg;
       }
 
-      vector<Edge>::iterator edgeEnd()
+      void addIncomingEdge(Edge * e)
       {
-          return aList.end();
+          inEdges.push_back(e);
+	  ++inDeg;
       }
 
-      void addEdge(int endV, int weight)
-      {
-          Edge e(index, endV, weight);
-          aList.push_back(e);
-	  ++numEdges;
-      }
-
+      // TODO rewrite
       void removeEdge(int endV, int weight)
       {
-          aList.erase( remove_if(aList.begin(), aList.end(), [&](Edge  e)
-			  {
-			      return e.weight == weight && e.destIndex == endV;
-			  }));
-	  --numEdges;
       }
 
+      // TODO rewrite
       bool hasEdge(int toV, int weight)
       {
-          return any_of( aList.begin(), aList.end(), [&](Edge e)
-			  { 
-			      return toV == e.destIndex && weight == e.weight;  
-			  });
+          return false;
       }
 
       int getNumEdges()
       {
-          return numEdges;
+          return inDeg + outDeg;
       }
 
       void setIndex(int n)
@@ -73,14 +64,13 @@ class Vertex
       {
           return index;
       }
- 
+
+     // TODO rewrite 
       Vertex & operator = (const Vertex & that)
       {
           if(this != &that)
 	  {
 	      index = that.index;
-	      numEdges = that.numEdges; 
-	      aList = that.aList;
 	  }
           return *this;
       }
@@ -88,10 +78,16 @@ class Vertex
       friend ostream & operator <<(ostream & o, const Vertex & v)
       {
           o << "Vertex: " << v.index << endl;
-	  o << "Edges: " << v.numEdges << endl;
-	  for_each(v.aList.begin(), v.aList.end(), [&](Edge e)
-			  {  
-			      o << e << endl;
+	  o << "Incoming Edges: " << endl;
+	  for_each(v.inEdges.begin(), v.inEdges.end(), [&](Edge * e)
+			  {
+			      o << *e << endl;
+			  });
+	  
+	  o << "Outgoing Edges: " << endl;
+	  for_each(v.outEdges.begin(), v.outEdges.end(), [&](Edge * e)
+			  {
+			      o << *e << endl;
 			  });
 	  return o;
       }

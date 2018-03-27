@@ -115,12 +115,12 @@ void testGetVertexSingle()
 
     cout << "original: " << endl << myGraph;
 
-    Vertex v= myGraph.getVertex(4);
-    v.removeEdge(1,50);
+//    Vertex v= myGraph.getVertex(4);
+//    v.removeEdge(1,50);
 
-    cout << "vertex after removal of edge: " << v << endl;
+//    cout << "vertex after removal of edge: " << v << endl;
 
-    cout << "original: " << endl << myGraph;
+//    cout << "original: " << endl << myGraph;
 
 }
 

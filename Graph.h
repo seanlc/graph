@@ -13,7 +13,7 @@ class Graph
 {
     public:
         Graph(int numV)
-	: numVertex(numV), vertexIndexNumber(numV)
+	: numVertex(numV), vertexIndexNumber(numV), numEdges(0)
 	{
 	    gph.reserve(numV);
 	    for(int i = 0; i < numVertex; ++i)
@@ -24,7 +24,7 @@ class Graph
 	}
 
         Graph()
-        : numVertex(0), vertexIndexNumber(0)	
+        : numVertex(0), vertexIndexNumber(0), numEdges(0)
 	{}
 
 	~Graph()
@@ -38,16 +38,7 @@ class Graph
 	 
 	vector<Edge> getEdges()
 	{
-	    int nEdges = getNumE();
-	    vector<Edge> tmp;
-	    tmp.reserve(nEdges);
-	    for_each(gph.begin(), gph.end(), [&](Vertex v)
-			    {
-			        for_each(v.edgeBegin(), v.edgeEnd(), [&](Edge e)
-						{
-						    tmp.push_back(e);
-						});    
-			    });
+	    vector<Edge> tmp = edges;
 	    return tmp;
 	}
 
@@ -58,22 +49,24 @@ class Graph
 
 	int getNumE() const
 	{
-	    int numEdges = 0;
-	    for_each(gph.begin(), gph.end(), [&](Vertex v)
-			    {
-			        numEdges += v.getNumEdges();
-			    });
 	    return numEdges;
 	}
 
 	void addEdge(int fromV, int toV, int weight)
 	{
-	   gph[fromV].addEdge(toV, weight);
+	     // create edge
+	     Edge * newEdge = new Edge(fromV, toV, weight);
+	     //  add edge to edge collection
+	     edges.push_back(*newEdge);
+	     //  add pointer to outEdges of fromV
+	     gph[fromV].addOutgoingEdge(newEdge);
+	     //  add pointer to inEdges of toV
+	     gph[toV].addIncomingEdge(newEdge);
 	}
 
+	// TODO rewrite
 	void removeEdge(int fromV, int toV, int weight)
 	{
-            gph[fromV].removeEdge(toV, weight);
 	}
 
 	void addVertex()
@@ -92,9 +85,10 @@ class Graph
 	    --numVertex;
 	}
 
+	// TODO rewrite
 	bool hasEdge(int fromV, int toV, int weight)
 	{
-	    return gph[fromV].hasEdge(toV, weight);
+	    return false;
 	}
 
 	// returns Vertex with index matching provided argument, vertex with index of -1 if no such vertex exists
@@ -130,8 +124,10 @@ class Graph
 
     private:
 	vector<Vertex> gph;
+	vector<Edge> edges;
 	int numVertex;
 	int vertexIndexNumber;
+	int numEdges;
 };
 
 
