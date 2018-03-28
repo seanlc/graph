@@ -39,9 +39,23 @@ class Vertex
 	  ++inDeg;
       }
 
-      // TODO rewrite
-      void removeEdge(int endV, int weight)
+      void removeIncomingEdge(Edge e)
       {
+          inEdges.erase( remove_if(inEdges.begin(), inEdges.end(), [&](Edge * ePtr)
+			  {
+			      cout << "edge ptr: " << ePtr << endl;
+			      return (*ePtr == e);    
+			  })  ,inEdges.end());      
+	  --inDeg;
+      }
+
+      void removeOutgoingEdge(Edge e)
+      {
+	  outEdges.erase( remove_if(outEdges.begin(), outEdges.end(), [&](Edge * ePtr)
+				  {
+				      return (*ePtr == e);
+				  }) , outEdges.end());
+          --outDeg;
       }
 
       // TODO rewrite

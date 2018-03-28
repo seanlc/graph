@@ -75,7 +75,9 @@ void testGetVertex()
     vector<Vertex> copy = myGraph.getVertices();
 
     cout << "copy after removal of edge: " << endl;
-    copy.at(0).removeEdge(1,50);
+
+//  TODO rewrite
+//    copy.at(0).removeEdge(1,50);
 
     for_each(copy.begin(), copy.end(), [&](Vertex v)
 		    {
@@ -96,12 +98,12 @@ void testGetEdges()
     cout << "original: " << endl << myGraph;
 
 
-    vector<Edge> e = myGraph.getEdges();
+    vector<Edge *> e = myGraph.getEdges();
     
     cout << "edge collection: " << endl;
-    for_each(e.begin(), e.end(), [&](Edge e)
+    for_each(e.begin(), e.end(), [&](Edge * e)
 		    {
-		        cout << e << endl;
+		        cout << *e << endl;
 		    });
 }
 
@@ -136,7 +138,21 @@ void testGetEdge()
 
     cout << "returned edge: " << endl;
     cout << e << endl;
+}
 
+void testRemoveEdge()
+{
+    Graph myGraph(5);
+    for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
+		    {
+		       myGraph.addEdge(v.getIndex(), 1, 50); 
+		    });
+
+    cout << "original: " << endl << myGraph;
+    
+    myGraph.removeEdge(0,1,50);
+
+    cout << "after removal of 0->1 with weight 50" << endl << myGraph;
 }
 
 int main()
@@ -149,6 +165,7 @@ int main()
 //    testGetVertex();
 //    testGetEdges();
 //    testGetVertexSingle();
-    testGetEdge();
+//    testGetEdge();
+    testRemoveEdge();
     return 0;
 }

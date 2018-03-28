@@ -36,6 +36,13 @@ struct Edge
           return *this;
       }
 
+      bool operator == (const Edge & that)
+      {
+          if(srcIndex == that.srcIndex && destIndex == that.destIndex && weight == that.weight)
+	      return true;
+	  return false;
+      }
+
       friend ostream & operator << (ostream & o, const Edge e)
       {
         o << "Edge from vertex " << e.srcIndex  << " to vertex " << e.destIndex << " with weight " << e.weight;

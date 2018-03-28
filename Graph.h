@@ -13,7 +13,7 @@ class Graph
 {
     public:
         Graph(int numV)
-	: numVertex(numV), vertexIndexNumber(numV), numEdges(0)
+	: numVertex(numV), vertexIndexNumber(numV), numEdges(0), edgeIndexNumber(0)
 	{
 	    gph.reserve(numV);
 	    for(int i = 0; i < numVertex; ++i)
@@ -24,11 +24,14 @@ class Graph
 	}
 
         Graph()
-        : numVertex(0), vertexIndexNumber(0), numEdges(0)
+        : numVertex(0), vertexIndexNumber(0), numEdges(0), edgeIndexNumber(0)
 	{}
 
 	~Graph()
-	{}
+	{
+	    for(int i = 0; i < edgeIndexNumber; ++i)
+	        delete edges[i];
+	}
 
         vector<Vertex> getVertices()
 	{
@@ -36,9 +39,9 @@ class Graph
 	    return tmp;
 	}
 	 
-	vector<Edge> getEdges()
+	vector<Edge *> getEdges()
 	{
-	    vector<Edge> tmp = edges;
+	    vector<Edge *> tmp = edges;
 	    return tmp;
 	}
 
@@ -57,25 +60,26 @@ class Graph
 	     // create edge
 	     Edge * newEdge = new Edge(fromV, toV, weight);
 	     //  add edge to edge collection
-	     edges.push_back(*newEdge);
+	     edges.push_back(newEdge);
 	     //  add pointer to outEdges of fromV
 	     gph[fromV].addOutgoingEdge(newEdge);
 	     //  add pointer to inEdges of toV
 	     gph[toV].addIncomingEdge(newEdge);
+	     // increment number of edges
+	     ++edgeIndexNumber;
+	     ++numEdges;
 	}
 
-	// TODO rewrite
 	void removeEdge(int fromV, int toV, int weight)
 	{
-	    // TODO get edge from edge collection
-	    //
-	    // TODO remove pointer from inEdges of toV
-            
-            // TODO remove pointer from outEdges of fromV
-	    
-	    // TODO remove edge from edge collection
-
-	    // TODO delete edge
+	    // get edge ptr
+	    Edge rEdge = getEdge(fromV, toV, weight);
+	    // remove pointer from inEdges of toV
+            gph[toV].removeIncomingEdge(rEdge); 
+            // remove pointer from outEdges of fromV
+	    gph[fromV].removeOutgoingEdge(rEdge);
+	    // decrement number of edges
+	    --numEdges;
 	}
 
 	void addVertex()
@@ -117,16 +121,16 @@ class Graph
 	Edge getEdge(int srcV, int destV, int weight)
 	{
 	    Edge retEdge(-1,-1,-1);
-	    for_each( edges.begin(), edges.end(), [&](Edge e)
+	    for_each( edges.begin(), edges.end(), [&](Edge * e)
 			    {
-			        if(e.srcIndex == srcV && e.destIndex == destV && e.weight == weight)
-				    retEdge = e;
+			        if(e->srcIndex == srcV && e->destIndex == destV && e->weight == weight)
+				    retEdge = *e;
 			    });
 
 	    return retEdge;
 	}
-
-        vector<Vertex>::iterator begin()
+        
+	vector<Vertex>::iterator begin()
 	{
 	    return gph.begin();
 	}
@@ -136,12 +140,12 @@ class Graph
 	    return gph.end();
 	}
 
-	vector<Edge>::iterator edgeBegin()
+	vector<Edge *>::iterator edgeBegin()
 	{
 	    return edges.begin();
 	}
 
-	vector<Edge>::iterator edgesEnd()
+	vector<Edge *>::iterator edgesEnd()
 	{
 	    return edges.end();
 	}
@@ -157,10 +161,11 @@ class Graph
 
     private:
 	vector<Vertex> gph;
-	vector<Edge> edges;
+	vector<Edge *> edges;
 	int numVertex;
 	int vertexIndexNumber;
 	int numEdges;
+	int edgeIndexNumber;
 };
 
 
