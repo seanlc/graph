@@ -43,7 +43,6 @@ class Vertex
       {
           inEdges.erase( remove_if(inEdges.begin(), inEdges.end(), [&](Edge * ePtr)
 			  {
-			      cout << "edge ptr: " << ePtr << endl;
 			      return (*ePtr == e);    
 			  })  ,inEdges.end());      
 	  --inDeg;
@@ -56,12 +55,6 @@ class Vertex
 				      return (*ePtr == e);
 				  }) , outEdges.end());
           --outDeg;
-      }
-
-      // TODO rewrite
-      bool hasEdge(int toV, int weight)
-      {
-          return false;
       }
 
       int getNumEdges()

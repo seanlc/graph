@@ -158,7 +158,7 @@ void testRemoveEdge()
 int main()
 {
 //    testConstr();
-//    testAddRemoveEdge();
+    testAddRemoveEdge();
 //    testAddRemoveVertex();
 //    testNumEdges();
 //    testNumVertices();
@@ -166,6 +166,6 @@ int main()
 //    testGetEdges();
 //    testGetVertexSingle();
 //    testGetEdge();
-    testRemoveEdge();
+//    testRemoveEdge();
     return 0;
 }

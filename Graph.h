@@ -70,6 +70,14 @@ class Graph
 	     ++numEdges;
 	}
 
+	void removeEdgeFromCol(Edge rEdge)
+	{
+	    edges.erase( remove_if(edges.begin(), edges.end(), [&](Edge * ePtr)
+				    {
+				        return *ePtr == rEdge;
+				    }) , edges.end());
+	}
+
 	void removeEdge(int fromV, int toV, int weight)
 	{
 	    // get edge ptr
@@ -78,6 +86,8 @@ class Graph
             gph[toV].removeIncomingEdge(rEdge); 
             // remove pointer from outEdges of fromV
 	    gph[fromV].removeOutgoingEdge(rEdge);
+	    // remove from edge collection
+	    removeEdgeFromCol(rEdge);
 	    // decrement number of edges
 	    --numEdges;
 	}
@@ -98,10 +108,16 @@ class Graph
 	    --numVertex;
 	}
 
-	// TODO rewrite
 	bool hasEdge(int fromV, int toV, int weight)
 	{
-	    return false;
+	    Edge tmp(fromV, toV, weight);
+	    bool found = false;
+	    for_each(edges.begin(), edges.end(), [&](Edge * ePtr)
+			    {
+			        if(*ePtr == tmp)
+			           found = true;	
+			    });
+	    return found;
 	}
 
 	// TODO add exception for nonexistent vertex
