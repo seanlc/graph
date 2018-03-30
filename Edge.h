@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 // TODO copy constructor
 struct Edge
 {

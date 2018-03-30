@@ -3,8 +3,6 @@
 #include <algorithm>
 #include "Edge.h"
 
-using namespace std;
-
 // TODO copy constructor
 class Vertex
 {

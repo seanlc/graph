@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Graph.h"
 
-using namespace std;
 
 void testConstr()
 {
@@ -109,7 +108,7 @@ void testGetEdges()
 
 void testGetVertexSingle()
 {
-    Graph myGraph(5);
+    Graph myGraph(2);
     for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
 		    {
 		       myGraph.addEdge(v.getIndex(), 1, 50); 
@@ -117,8 +116,8 @@ void testGetVertexSingle()
 
     cout << "original: " << endl << myGraph;
 
-    Edge e = myGraph.getEdge(4,1,50);
-    Vertex v= myGraph.getVertex(4);
+    Edge e = myGraph.getEdge(0,1,50);
+    Vertex   v = myGraph.getVertex(0);
     v.removeOutgoingEdge(e);
 
     cout << "vertex after removal of edge: " << v << endl;
@@ -159,6 +158,29 @@ void testRemoveEdge()
     cout << "after removal of 0->1 with weight 50" << endl << myGraph;
 }
 
+void testVertexRemovalBug()
+{
+    Graph myGraph(4);
+    for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
+		    {
+		       myGraph.addEdge(v.getIndex(), 1, 50); 
+		    });
+
+    cout << "original: " << endl << myGraph;
+    
+    myGraph.removeVertex(0);
+
+    myGraph.removeEdge(2,1,50);
+
+    cout << "after removing edge 2 -> 1 with weight 50:" << endl << myGraph << endl;
+}
+
+void testEdgeRemovalBug()
+{
+    // TODO remove edge from graph
+    // TODO update weight of edge in graph for edge added after removed edge
+}
+
 int main()
 {
 //    testConstr();
@@ -169,8 +191,8 @@ int main()
 //    testGetVertex();
 //    testGetEdges();
 //    testGetVertexSingle();
-    testGetEdge();
-//
+//    testGetEdge();
 //    testRemoveEdge();
+    testVertexRemovalBug();
     return 0;
 }

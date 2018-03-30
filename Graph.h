@@ -4,9 +4,6 @@
 #include "Vertex.h"
 #include "Edge.h"
 
-
-using namespace std;
-
 // TODO copy constructor
 // TODO assignment operator
 class Graph
@@ -62,9 +59,11 @@ class Graph
 	     //  add edge to edge collection
 	     edges.push_back(newEdge);
 	     //  add pointer to outEdges of fromV
-	     gph[fromV].addOutgoingEdge(newEdge);
+	     int srcIndex = getPosOfVertex(fromV);
+	     gph[srcIndex].addOutgoingEdge(newEdge);
 	     //  add pointer to inEdges of toV
-	     gph[toV].addIncomingEdge(newEdge);
+	     int destIndex = getPosOfVertex(toV);
+	     gph[destIndex].addIncomingEdge(newEdge);
 	     // increment number of edges
 	     ++edgeIndexNumber;
 	     ++numEdges;
@@ -83,9 +82,11 @@ class Graph
 	    // get edge ptr
 	    Edge rEdge = getEdge(fromV, toV, weight);
 	    // remove pointer from inEdges of toV
-            gph[toV].removeIncomingEdge(rEdge); 
+	    int destIndex = getPosOfVertex(toV);
+            gph[destIndex].removeIncomingEdge(rEdge); 
             // remove pointer from outEdges of fromV
-	    gph[fromV].removeOutgoingEdge(rEdge);
+	    int srcIndex = getPosOfVertex(fromV);
+	    gph[srcIndex].removeOutgoingEdge(rEdge);
 	    // remove from edge collection
 	    removeEdgeFromCol(rEdge);
 	    // decrement number of edges
@@ -122,9 +123,9 @@ class Graph
 
 	// TODO add exception for nonexistent vertex
 	// returns Vertex with index matching provided argument, vertex with index of -1 if no such vertex exists
-	Vertex getVertex(int index)
+	Vertex  getVertex(int index)
 	{
-	    Vertex vert(-1);
+	    Vertex  vert(-1);
 	    for_each( gph.begin(), gph.end(), [&](Vertex v)   
 			    {
 			        if(v.getIndex() == index)
@@ -182,6 +183,17 @@ class Graph
 	int vertexIndexNumber;
 	int numEdges;
 	int edgeIndexNumber;
+	
+	int getPosOfVertex(int n)
+	{
+	    for(int i = 0; i < numVertex; ++i)
+            {
+	        if(gph[i].getIndex() == n)
+		    return i;
+	    }
+	    
+	    return -1;
+	}
 };
 
 
