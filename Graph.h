@@ -122,6 +122,19 @@ class Graph
 	}
 
 	// TODO add exception for nonexistent vertex
+	int getDegreeOfVertex(int index)
+	{
+	    int pos = getPosOfVertex(index);
+	    int deg = -1;
+
+	    if(pos != -1)
+	        deg = gph[pos].getDegree();
+
+	    return deg;    
+	        
+	}
+
+	// TODO add exception for nonexistent vertex
 	// returns Vertex with index matching provided argument, vertex with index of -1 if no such vertex exists
 	Vertex  getVertex(int index)
 	{

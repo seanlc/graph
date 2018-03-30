@@ -175,6 +175,26 @@ void testVertexRemovalBug()
     cout << "after removing edge 2 -> 1 with weight 50:" << endl << myGraph << endl;
 }
 
+void testGetDegreeOfVertex()
+{
+    Graph myGraph(4);
+    for_each(myGraph.begin(), myGraph.end(), [&](Vertex v)
+		    {
+		        int index = v.getIndex();
+			if(index != 1)
+		            myGraph.addEdge(index, 1, 50);
+			else
+		           myGraph.addEdge(1, 0, 50);	
+		    });
+
+    cout << "original: " << endl << myGraph;
+
+    cout << "degree of vertex 1 (4 expected): " << myGraph.getDegreeOfVertex(1) << endl;
+    cout << "degree of vertex 0 (2 expected): " << myGraph.getDegreeOfVertex(0) << endl;
+    cout << "degree of vertex 3 (1 expected): " << myGraph.getDegreeOfVertex(3) << endl;
+
+}
+
 void testEdgeRemovalBug()
 {
     // TODO remove edge from graph
@@ -193,6 +213,7 @@ int main()
 //    testGetVertexSingle();
 //    testGetEdge();
 //    testRemoveEdge();
-    testVertexRemovalBug();
+//    testVertexRemovalBug();
+    testGetDegreeOfVertex();
     return 0;
 }

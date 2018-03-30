@@ -60,6 +60,11 @@ class Vertex
           return inDeg + outDeg;
       }
 
+      int getDegree()
+      {
+          return inDeg + outDeg;
+      }
+
       void setIndex(int n)
       {
           index = n;
