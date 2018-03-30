@@ -15,11 +15,11 @@ void testAddRemoveEdge()
     myGraph.addEdge(0,4,50);
     cout << myGraph << endl;
 
-    cout << "hasEdge(0,4,50): " << myGraph.hasEdge(0,4,50) << endl;
+    cout << "hasEdge(0,4,50), 1 expected: " << myGraph.hasEdge(0,4,50) << endl;
     
     myGraph.removeEdge(0,4,50);
     cout << myGraph << endl;
-    cout << "hasEdge(0,4,50): " << myGraph.hasEdge(0,4,50) << endl;
+    cout << "hasEdge(0,4,50), 0 expected: " << myGraph.hasEdge(0,4,50) << endl;
 
 }
 
@@ -74,10 +74,10 @@ void testGetVertex()
 
     vector<Vertex> copy = myGraph.getVertices();
 
-    cout << "copy after removal of edge: " << endl;
+    cout << "copy after removal of outgoing edge from 0: " << endl;
 
-//  TODO rewrite
-//    copy.at(0).removeEdge(1,50);
+    Edge e = myGraph.getEdge(0,1,50);
+    copy.at(0).removeOutgoingEdge(e);
 
     for_each(copy.begin(), copy.end(), [&](Vertex v)
 		    {
@@ -117,12 +117,13 @@ void testGetVertexSingle()
 
     cout << "original: " << endl << myGraph;
 
-//    Vertex v= myGraph.getVertex(4);
-//    v.removeEdge(1,50);
+    Edge e = myGraph.getEdge(4,1,50);
+    Vertex v= myGraph.getVertex(4);
+    v.removeOutgoingEdge(e);
 
-//    cout << "vertex after removal of edge: " << v << endl;
+    cout << "vertex after removal of edge: " << v << endl;
 
-//    cout << "original: " << endl << myGraph;
+    cout << "original: " << endl << myGraph;
 
 }
 
@@ -135,9 +136,12 @@ void testGetEdge()
 		    });
 
     Edge e = myGraph.getEdge(0,1,50);
+    e.weight = 100;
 
-    cout << "returned edge: " << endl;
+    cout << "after changed weight to 100 on edge 0 -> 1: " << endl;
     cout << e << endl;
+
+    cout << "original: " << endl << myGraph;
 }
 
 void testRemoveEdge()
@@ -158,14 +162,15 @@ void testRemoveEdge()
 int main()
 {
 //    testConstr();
-    testAddRemoveEdge();
+//    testAddRemoveEdge();
 //    testAddRemoveVertex();
 //    testNumEdges();
 //    testNumVertices();
 //    testGetVertex();
 //    testGetEdges();
 //    testGetVertexSingle();
-//    testGetEdge();
+    testGetEdge();
+//
 //    testRemoveEdge();
     return 0;
 }
